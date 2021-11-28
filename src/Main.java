@@ -32,10 +32,10 @@ public class Main {
             }
         }while (correctChoice);
         do {
-            System.out.println("number of characters (2-8 chars) :");
+            System.out.println("number of characters (2-10 chars) :");
             Scanner scanner1 = new Scanner(System.in);
             numberOfChrs = scanner1.nextInt();
-            if(numberOfChrs<2||numberOfChrs>8){ correctNrOfChrs=true;}
+            if(numberOfChrs<2||numberOfChrs>10){ correctNrOfChrs=true;}
             else {correctNrOfChrs=false;}
         }
         while (correctNrOfChrs);
@@ -47,6 +47,7 @@ public class Main {
         System.out.println("--------------------------------------------\n\nsearching for a match ...\n");
         Long ctm = System.currentTimeMillis();
         while (search){
+
                 c++; // counter
             for (int j=0; j<numberOfChrs ; j++){
                  word[j] = (char)('a' + random.nextInt(26));
