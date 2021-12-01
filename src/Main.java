@@ -66,7 +66,7 @@ public class Main {
 
                 c++; // counter
                 for (int j = 0; j < numberOfChrs; j++) {
-                    word[j] = (char) ('a' + random.nextInt(26));
+                    word[j] = (char) ('0' + random.nextInt(75)); // a bound 26
                     outString = String.valueOf(word);
                     if (getHashValue(outString).equals(hashtext)) {
                         System.out.println("DONE ! searching completed :\n " + outString + " <= " + hashtext);
