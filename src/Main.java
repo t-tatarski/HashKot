@@ -1,3 +1,4 @@
+import java.io.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -5,7 +6,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * @author Tatarski
+ * @author Tatarski T
  */
 public class Main {
     static String ALGO = "md5";
@@ -22,8 +23,31 @@ public class Main {
         String outString = "";
         showBanner();
         if (args.length > 0) {
-            // dictionary att.
+            // dictionary method
+            Boolean searchDict= true;
+            File file = new File(args[0]);
+            if (file.exists()){
+                System.out.println("dictionary size = "+file.length()/1024+" Kb \n");
+                try {
+                    String tmp;
+                    BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+                    while ( ((tmp = bufferedReader.readLine())!=null) && searchDict){
+                        if (getHashValue(tmp) == getHashValue(args[1]) ){
+                            System.out.println("DONE! "+tmp+" =>"+getHashValue(tmp));
+                            searchDict=false;
+                        }
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    System.err.println("Error"+e);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.err.println("Error"+e);
+                }
+
+            }
         }else{
+            //brute force method
             do {
                 System.out.println("select type of algorithm (1=md5 2=sha1) :");
                 Scanner scanner3 = new Scanner(System.in);
@@ -62,8 +86,8 @@ public class Main {
             char[] word = new char[numberOfChrs];
             System.out.println("--------------------------------------------\n\nsearching for a match ...\n");
             Long ctm = System.currentTimeMillis();
-            while (search) {
 
+            while (search) {
                 c++; // counter
                 for (int j = 0; j < numberOfChrs; j++) {
                     word[j] = (char) ('0' + random.nextInt(75)); // a bound 26
@@ -79,6 +103,12 @@ public class Main {
         }
     }
 
+    /**
+     *
+     * @param  result String value
+     * @return method return hashcode value
+     * @throws NoSuchAlgorithmException
+     */
     private static String getHashValue(String result) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance(ALGO);
         byte[] messageDigest = md.digest(result.getBytes());
@@ -87,15 +117,16 @@ public class Main {
         return hashtext = number.toString(16);
     }
 
+
     private static void showBanner() {
-        System.out.printf("" +
-                "\n" +
+        System.out.printf(""
+                +
                 "  |                   |      |            |   \n" +
                 "  __ \\    _` |   __|  __ \\   |  /   _ \\   __| \n" +
                 "  | | |  (   | \\__ \\  | | |    <   (   |  |   \n" +
                 " _| |_| \\__,_| ____/ _| |_| _|\\_\\ \\___/  \\__| \n" +
                 "                                              \n" +
                 "===== simple md5 & sha1 hash cracker =========\n" +
-                "\n\n");
+                "\n");
     }
 }
