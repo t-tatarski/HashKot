@@ -9,7 +9,7 @@ import java.util.Scanner;
  * @author Tatarski T
  */
 public class Main {
-    static String ALGO = "md5";
+    static String selectedAlgo = "md5";
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
         //init
@@ -23,7 +23,9 @@ public class Main {
         String outString = "";
         showBanner();
         if (args.length > 0) {
+
             // dictionary method
+
             Boolean searchDict= true;
             File file = new File(args[0]);
             if (file.exists()){
@@ -44,10 +46,10 @@ public class Main {
                     e.printStackTrace();
                     System.err.println("Error"+e);
                 }
-
             }
         }else{
             //brute force method
+
             do {
                 System.out.println("select type of algorithm (1=md5 2=sha1) :");
                 Scanner scanner3 = new Scanner(System.in);
@@ -59,13 +61,13 @@ public class Main {
                 }
                 switch (numberOfAlg) {
                     case 1:
-                        ALGO = "md5";
+                        selectedAlgo = "md5";
                         break;
                     case 2:
-                        ALGO = "sha1";
+                        selectedAlgo = "sha1";
                         break;
                     default:
-                        ALGO = "md5";
+                        selectedAlgo = "md5";
                 }
             } while (correctChoice);
             do {
@@ -79,7 +81,7 @@ public class Main {
                 }
             }
             while (correctNrOfChrs);
-            System.out.println("Paste " + ALGO + "hashcode below:");
+            System.out.println("Paste " + selectedAlgo + "hashcode below:");
             Scanner scenner = new Scanner(System.in);
             hashtext = scenner.nextLine().toLowerCase();
             Random random = new Random();
@@ -106,11 +108,11 @@ public class Main {
     /**
      *
      * @param  result String value
-     * @return method return hashcode value
+     * @return  a hashcode value as String
      * @throws NoSuchAlgorithmException
      */
     private static String getHashValue(String result) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance(ALGO);
+        MessageDigest md = MessageDigest.getInstance(selectedAlgo);
         byte[] messageDigest = md.digest(result.getBytes());
         BigInteger number = new BigInteger(1, messageDigest);
         String hashtext;
