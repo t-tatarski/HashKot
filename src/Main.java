@@ -1,7 +1,14 @@
+import org.bouncycastle.crypto.digests.MD4Digest;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.util.encoders.Hex;
+
 import java.io.*;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.Security;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -51,7 +58,7 @@ public class Main {
             //brute force method
 
             do {
-                System.out.println("select type of algorithm (1=md5 2=sha1) :");
+                System.out.println("select type of algorithm (1=md5 2=sha1 3=md4 4=sha256) :");
                 Scanner scanner3 = new Scanner(System.in);
                 numberOfAlg = scanner3.nextInt();
                 if (numberOfChrs < 1 || numberOfChrs > 2) {
@@ -65,6 +72,12 @@ public class Main {
                         break;
                     case 2:
                         selectedAlgo = "sha1";
+                        break;
+                    case 3:
+                        selectedAlgo = "MD4";
+                        break;
+                    case 4:
+                        selectedAlgo = "SHA-256";
                         break;
                     default:
                         selectedAlgo = "md5";
@@ -81,7 +94,7 @@ public class Main {
                 }
             }
             while (correctNrOfChrs);
-            System.out.println("Paste " + selectedAlgo + "hashcode below:");
+            System.out.println("Paste " + selectedAlgo + " hashcode below:");
             Scanner scenner = new Scanner(System.in);
             hashtext = scenner.nextLine().toLowerCase();
             Random random = new Random();
@@ -108,15 +121,35 @@ public class Main {
     /**
      *
      * @param  result String value
-     * @return  a hashcode value as String
+     * @return  a md4, md5, sha 1 hashcode value as String
      * @throws NoSuchAlgorithmException
      */
     private static String getHashValue(String result) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance(selectedAlgo);
-        byte[] messageDigest = md.digest(result.getBytes());
-        BigInteger number = new BigInteger(1, messageDigest);
-        String hashtext;
-        return hashtext = number.toString(16);
+        String hashtext="";
+        if (selectedAlgo=="MD4"){
+            byte[] res = new byte[0];
+            try {
+                res = result.getBytes("UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            MD4Digest md4 = new MD4Digest();
+            byte[] pwdBytes = result.getBytes();
+            md4.update(pwdBytes, 0, pwdBytes.length);
+            byte[] encPwd = new byte[md4.getDigestSize()];
+            md4.doFinal(encPwd, 0);
+            hashtext = new BigInteger(1,encPwd).toString(16);
+            return hashtext;
+
+        }else{
+            MessageDigest md = MessageDigest.getInstance(selectedAlgo);
+            byte[] messageDigest = md.digest(result.getBytes());
+            BigInteger number = new BigInteger(1, messageDigest);
+
+             hashtext = number.toString(16);
+            return hashtext;
+        }
+
     }
 
 
