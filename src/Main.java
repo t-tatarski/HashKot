@@ -58,7 +58,7 @@ public class Main {
             //brute force method
 
             do {
-                System.out.println("select type of algorithm (1=md5 2=sha1 3=md4 4=sha256) :");
+                System.out.println("select type of algorithm (1=md5 2=sha1 3=md4 4=sha256 5=sha512) :");
                 Scanner scanner3 = new Scanner(System.in);
                 numberOfAlg = scanner3.nextInt();
                 if (numberOfChrs < 1 || numberOfChrs > 2) {
@@ -68,10 +68,10 @@ public class Main {
                 }
                 switch (numberOfAlg) {
                     case 1:
-                        selectedAlgo = "md5";
+                        selectedAlgo = "MD5";
                         break;
                     case 2:
-                        selectedAlgo = "sha1";
+                        selectedAlgo = "SHA-1";
                         break;
                     case 3:
                         selectedAlgo = "MD4";
@@ -79,15 +79,18 @@ public class Main {
                     case 4:
                         selectedAlgo = "SHA-256";
                         break;
+                    case 5:
+                        selectedAlgo = "SHA-512";
+                        break;
                     default:
-                        selectedAlgo = "md5";
+                        selectedAlgo = "MD5";
                 }
             } while (correctChoice);
             do {
-                System.out.println("number of characters (2-10 chars) :");
+                System.out.println("number of characters (2-12 chars) :");
                 Scanner scanner1 = new Scanner(System.in);
                 numberOfChrs = scanner1.nextInt();
-                if (numberOfChrs < 2 || numberOfChrs > 10) {
+                if (numberOfChrs < 2 || numberOfChrs > 12) {
                     correctNrOfChrs = true;
                 } else {
                     correctNrOfChrs = false;
@@ -107,6 +110,7 @@ public class Main {
                 for (int j = 0; j < numberOfChrs; j++) {
                     word[j] = (char) ('0' + random.nextInt(75)); // a bound 26
                     outString = String.valueOf(word);
+                    //System.out.println(hashtext+ " - " + getHashValue(outString));
                     if (getHashValue(outString).equals(hashtext)) {
                         System.out.println("DONE ! searching completed :\n " + outString + " <= " + hashtext);
                         System.out.println("elapsed time :" + ((System.currentTimeMillis() - ctm) / 1000) + " seconds.");
@@ -161,7 +165,7 @@ public class Main {
                 "  | | |  (   | \\__ \\  | | |    <   (   |  |   \n" +
                 " _| |_| \\__,_| ____/ _| |_| _|\\_\\ \\___/  \\__| \n" +
                 "                                              \n" +
-                "===== simple md5 & sha1 hash cracker =========\n" +
+                "=========== simple hashcode cracker ===========\n" +
                 "\n");
     }
 }
